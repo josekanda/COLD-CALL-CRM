@@ -20,6 +20,7 @@ import {
   MessageSquare,
   Star,
 } from "lucide-react";
+import type { Filter } from "@/components/toolbar";
 
 const scoreBadge = {
   hi: "bg-green-100 text-green-700",
@@ -33,12 +34,16 @@ export function ProspectTable({
   onUpdate,
   onStatus,
   onToast,
+  filter,
+  onFilter,
 }: {
   prospects: Prospect[];
   cal: string;
   onUpdate: (id: string, patch: Partial<Prospect>) => void;
   onStatus: (id: string, s: Status) => void;
   onToast: (msg: string) => void;
+  filter: Filter;
+  onFilter: (f: Filter) => void;
 }) {
   const copy = (text: string, msg: string) =>
     copyToClipboard(text).then((ok) => ok && onToast(msg));
@@ -59,7 +64,26 @@ export function ProspectTable({
             <th className="px-4 py-3">Note</th>
             <th className="px-4 py-3">Tél</th>
             <th className="px-4 py-3">Score</th>
-            <th className="px-4 py-3">Statut</th>
+            <th className="px-4 py-3">
+              <label className="flex items-center gap-1.5">
+                Statut
+                <select
+                  aria-label="Filtrer par statut"
+                  value={
+                    filter === "all" || filter in STATUSES ? filter : "all"
+                  }
+                  onChange={(e) => onFilter(e.target.value as Filter)}
+                  className="rounded-lg border border-input bg-background px-1.5 py-0.5 text-xs font-normal normal-case"
+                >
+                  <option value="all">Tous les statuts</option>
+                  {Object.entries(STATUSES).map(([k, label]) => (
+                    <option key={k} value={k}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </th>
             <th className="px-4 py-3">Rappel</th>
             <th className="px-4 py-3">Montant</th>
             <th className="px-4 py-3">Site construit</th>

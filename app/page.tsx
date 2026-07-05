@@ -127,6 +127,8 @@ export default function Page() {
           onUpdate={update}
           onStatus={setStatus}
           onToast={showToast}
+          filter={filter}
+          onFilter={setFilter}
         />
       )}
 
