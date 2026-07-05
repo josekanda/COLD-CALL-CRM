@@ -18,6 +18,7 @@ const CHIPS: { f: Filter; label: string; icon?: LucideIcon }[] = [
   { f: "rdv", label: "RDV" },
   { f: "qualifie", label: "OUI · à construire" },
   { f: "construit", label: "Construits" },
+  { f: "refus", label: "Pas intéressé" },
   { f: "upsell", label: "Upsell en cours", icon: BadgeEuro },
 ];
 
