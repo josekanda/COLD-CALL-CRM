@@ -71,3 +71,8 @@ export function resetProspects() {
   const cur = getSnapshot();
   commit({ ...cur, prospects: [] });
 }
+
+export function removeProspect(id: string) {
+  const cur = getSnapshot();
+  commit({ ...cur, prospects: cur.prospects.filter((p) => p.id !== id) });
+}

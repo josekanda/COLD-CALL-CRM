@@ -10,6 +10,7 @@ import {
   setStatus,
   setCal,
   resetProspects,
+  removeProspect,
 } from "@/lib/crm-store";
 
 export function useCrm() {
@@ -22,5 +23,6 @@ export function useCrm() {
     setStatus,
     setCal,
     reset: resetProspects,
+    remove: removeProspect,
   };
 }
