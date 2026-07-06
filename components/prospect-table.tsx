@@ -19,6 +19,7 @@ import {
   Globe,
   MessageSquare,
   Star,
+  Trash2,
 } from "lucide-react";
 import type { Filter } from "@/components/toolbar";
 
@@ -36,6 +37,7 @@ export function ProspectTable({
   onToast,
   filter,
   onFilter,
+  onRemove,
 }: {
   prospects: Prospect[];
   cal: string;
@@ -44,6 +46,7 @@ export function ProspectTable({
   onToast: (msg: string) => void;
   filter: Filter;
   onFilter: (f: Filter) => void;
+  onRemove: (id: string) => void;
 }) {
   const copy = (text: string, msg: string) =>
     copyToClipboard(text).then((ok) => ok && onToast(msg));
@@ -291,6 +294,22 @@ export function ProspectTable({
                       className="inline-flex items-center gap-1 rounded-lg bg-primary text-primary-foreground px-2 py-1 text-xs font-semibold"
                     >
                       <Check className="size-3" aria-hidden />A dit OUI
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (
+                          !confirm(
+                            `Supprimer définitivement "${p.entreprise}" ?`,
+                          )
+                        )
+                          return;
+                        onRemove(p.id);
+                        onToast("Prospect supprimé");
+                      }}
+                      className="inline-flex items-center gap-1 rounded-lg border border-destructive/40 bg-destructive/10 text-destructive px-2 py-1 text-xs font-semibold"
+                    >
+                      <Trash2 className="size-3" aria-hidden />
+                      Supprimer
                     </button>
                   </div>
                 </td>

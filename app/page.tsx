@@ -21,8 +21,16 @@ function todayIso(): string {
 }
 
 export default function Page() {
-  const { state, importCsv, loadExample, update, setStatus, setCal, reset } =
-    useCrm();
+  const {
+    state,
+    importCsv,
+    loadExample,
+    update,
+    setStatus,
+    setCal,
+    reset,
+    remove,
+  } = useCrm();
   const [filter, setFilter] = useState<Filter>("all");
   const [search, setSearch] = useState("");
   const [toast, setToast] = useState("");
@@ -129,6 +137,7 @@ export default function Page() {
           onToast={showToast}
           filter={filter}
           onFilter={setFilter}
+          onRemove={remove}
         />
       )}
 
