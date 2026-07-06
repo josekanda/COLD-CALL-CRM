@@ -166,6 +166,7 @@ export default function Page() {
           onStatus={setStatus}
           onClose={() => setCallMode(false)}
           onToast={showToast}
+          onRemove={remove}
         />
       )}
 

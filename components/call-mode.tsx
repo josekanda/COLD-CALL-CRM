@@ -7,6 +7,7 @@ import {
   Check,
   PartyPopper,
   Lightbulb,
+  Trash2,
 } from "lucide-react";
 import type { Prospect, Status } from "@/lib/types";
 import {
@@ -27,12 +28,14 @@ export function CallMode({
   onStatus,
   onClose,
   onToast,
+  onRemove,
 }: {
   prospect: Prospect | null;
   restants: number;
   onStatus: (id: string, s: Status) => void;
   onClose: () => void;
   onToast: (msg: string) => void;
+  onRemove: (id: string) => void;
 }) {
   if (!prospect) {
     return (
@@ -143,6 +146,20 @@ export function CallMode({
               />
               {BON_OUI}
             </p>
+            <button
+              onClick={() => {
+                if (
+                  !confirm(`Supprimer définitivement "${prospect.entreprise}" ?`)
+                )
+                  return;
+                onRemove(prospect.id);
+                onToast("Prospect supprimé");
+              }}
+              className="mt-3 flex items-center justify-center gap-1 mx-auto text-xs text-destructive underline-offset-2 hover:underline"
+            >
+              <Trash2 className="size-3" aria-hidden />
+              Supprimer ce prospect
+            </button>
           </div>
           <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
             <div className="flex items-center justify-between gap-2">
