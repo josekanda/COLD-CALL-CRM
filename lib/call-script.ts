@@ -102,9 +102,9 @@ export const OBJECTIONS: Objection[] = [
       "Votre fiche, oui, et elle est très bien. Mais quand on clique pour en savoir plus, il n'y a rien derrière. C'est la différence entre être trouvé et être choisi.",
   },
   {
-    question: "Envoyez-moi un mail.",
+    question: "Envoyez-moi un courriel.",
     reponse:
-      "Je peux faire mieux. Ce soir vous recevez le site fini, directement sur ce numéro. Vous jugez sur pièce, ça vaut toutes les plaquettes du monde.",
+      "Je peux faire mieux. Ce soir vous recevez le site fini, directement sur ce numéro. Vous jugez sur pièce, ça vaut tous les dépliants du monde.",
   },
   {
     question: "J'ai pas le temps.",
