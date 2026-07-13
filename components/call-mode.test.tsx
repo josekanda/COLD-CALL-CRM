@@ -133,6 +133,27 @@ describe("CallMode — file d'appel", () => {
     expect(screen.getByText("Alpha")).toBeInTheDocument();
   });
 
+  it('skipper le même prospect plusieurs fois continue à avancer', () => {
+    render(
+      <CallMode
+        queue={[
+          p({ id: "1", entreprise: "Alpha" }),
+          p({ id: "2", entreprise: "Beta" }),
+        ]}
+        restants={2}
+        onStatus={noop}
+        onClose={noop}
+        onToast={noop}
+        onRemove={noop}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Pas joint/ })); // skip Alpha -> shows Beta
+    fireEvent.click(screen.getByRole("button", { name: /Pas joint/ })); // skip Beta -> shows Alpha (wraps)
+    expect(screen.getByText("Alpha")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Pas joint/ })); // skip Alpha again -> should show Beta, not Alpha
+    expect(screen.getByText("Beta")).toBeInTheDocument();
+  });
+
   it('"Non" appelle onRemove sans confirmation et n\'appelle pas onStatus', () => {
     const onRemove = vi.fn();
     const onStatus = vi.fn();

@@ -83,7 +83,7 @@ export function CallMode({
   };
   const passJoint = () => {
     onStatus(prospect.id, "a_appeler");
-    setSkipped((prev) => [...prev, prospect.id]);
+    setSkipped((prev) => [...prev.filter((id) => id !== prospect.id), prospect.id]);
     onToast("Pas joint — reste à appeler");
   };
   const non = () => {
