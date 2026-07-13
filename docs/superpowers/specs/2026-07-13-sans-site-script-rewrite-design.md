@@ -191,7 +191,6 @@ describe("CALL_STEPS", () => {
 ## Hors périmètre
 
 - `ANGLE_PITCH`, `ANGLE_LABELS`, `SITE_MORT_TIP` : inchangés.
-- Le reste d'`OBJECTIONS` (12 des 13 entrées) : inchangé.
 - Le label "Script 6 temps" dans `components/script-panel.tsx` : déjà incohérent avant ce changement (5 étapes réelles), non touché ici.
 - Pas de nouveau champ `Prospect` pour le prénom du préposé : `(ton prénom)` reste un texte littéral que le préposé complète lui-même en parlant, comme le reste du script est un guide et non un remplissage automatique intégral.
 
@@ -199,3 +198,92 @@ describe("CALL_STEPS", () => {
 
 - `lib/call-script.test.ts` : voir bloc `describe("CALL_STEPS", ...)` ci-dessus (remplace l'existant).
 - `components/call-mode.test.tsx` et `components/script-panel.tsx` n'ont pas de test dédié au rendu du script (aucun test existant à mettre à jour au-delà de `call-script.test.ts`).
+
+## Addendum (2026-07-13, suite à la revue finale) : `OBJECTIONS` par angle
+
+La revue de branche complète a signalé que la liste `OBJECTIONS` (partagée entre les 3 angles) contient plusieurs réponses qui supposent l'ancien flow (« ce soir », « le site », rappel demain, un seul canal) — au-delà de la seule entrée déjà corrigée. Comme `sans-site` est l'angle par défaut (le plus fréquent), ces réponses contredisent maintenant le script qu'utilise la majorité des appels. Décision : `OBJECTIONS` devient `Record<Angle, Objection[]>`, sur le même modèle que `CALL_STEPS`/`BON_OUI`.
+
+- `site-mort` et `reseaux` partagent un même tableau interne (`socleObjections`), copié verbatim depuis l'actuel `OBJECTIONS` — y compris la réponse originale à « Envoyez-moi un courriel. » (« Je peux faire mieux. Ce soir vous recevez le site fini... »), qui redevient correcte pour ces deux angles à canal unique.
+- `sans-site` reçoit son propre tableau. 6 entrées sur 13 restent identiques au socle (aucune promesse « ce soir »/« site fini »/rappel demain à corriger) : « C'est quoi l'arnaque, c'est gratuit ? », « Je marche au bouche à oreille... », « Je suis déjà sur Google. », « Combien ça coûte ? », « C'est vous l'IA, un robot ? », « Comment vous avez eu mon numéro ? ». 7 entrées sont reformulées pour coller au nouveau script (exemple envoyé par courriel/texto, pas de promesse de délai précis, pas de rappel demain garanti) :
+
+```ts
+const sansSiteObjections: Objection[] = [
+  {
+    question: "C'est quoi l'arnaque, c'est gratuit ?",
+    reponse:
+      "Il n'y en a pas. Vous regardez d'abord l'exemple, et si ça vous plaît, on parle du prix à ce moment-là. Si ça ne vous plaît pas, on en reste là. Je préfère montrer que promettre.",
+  },
+  {
+    question: "Je marche au bouche à oreille, j'ai pas besoin.",
+    reponse:
+      "C'est exactement pour ça que je vous ai choisi, vos avis sont excellents. Et la moitié des gens à qui on vous recommande tapent votre nom sur Google avant d'appeler. Là, ils ne trouvent rien. Un site simple récupère ces gens-là.",
+  },
+  {
+    question: "Je suis déjà sur Google.",
+    reponse:
+      "Votre fiche, oui, et elle est très bien. Mais quand on clique pour en savoir plus, il n'y a rien derrière. C'est la différence entre être trouvé et être choisi.",
+  },
+  {
+    question: "Envoyez-moi un courriel.",
+    reponse:
+      "Parfait, c'est justement une des deux options qu'on offre. Quel est le meilleur courriel pour vous joindre ?",
+  },
+  {
+    question: "J'ai pas le temps.",
+    reponse:
+      "Justement, ça ne prend aucun de votre temps. Je vous prépare un exemple, puis vous le regardez deux minutes quand ça adonne. C'est tout.",
+  },
+  {
+    question: "Combien ça coûte ?",
+    reponse:
+      "On en parle quand vous l'aurez vu. Tant que ça ne vous plaît pas, ça ne coûte rien. Et c'est sans rapport avec les devis d'agence que vous avez peut-être déjà reçus.",
+  },
+  {
+    question: "J'ai déjà un site.",
+    reponse:
+      "D'accord, je ne suis pas tombé dessus en cherchant votre entreprise. On peut quand même vous préparer un exemple pour comparer, ça n'engage à rien.",
+  },
+  {
+    question: "C'est fait avec l'IA votre truc ?",
+    reponse:
+      "C'est fait par moi, avec les outils professionnels d'aujourd'hui. Ce qui compte, c'est le résultat, et vous jugerez quand vous aurez vu l'exemple.",
+  },
+  {
+    question: "C'est vous l'IA, un robot ?",
+    reponse:
+      "Non non, je suis bien réel. Vous m'entendez hésiter, là ? (souris en le disant)",
+  },
+  {
+    question: "Qui me rappelle, c'est vous ?",
+    reponse:
+      "On vous prépare l'exemple, puis on se reparle une fois que vous l'aurez vu.",
+  },
+  {
+    question: "Je suis pas le patron.",
+    reponse:
+      "Vous faites bien de me le dire. On vous envoie l'exemple quand même, vous le montrez au patron, et on se reparle après.",
+  },
+  {
+    question: "Rappelez-moi plus tard.",
+    reponse:
+      "Bien sûr, je vous prends pas plus de temps. On vous prépare l'exemple, puis on se reparle une fois que vous l'aurez vu.",
+  },
+  {
+    question: "Comment vous avez eu mon numéro ?",
+    reponse:
+      "Sur votre fiche Google, là où vos clients vous trouvent. C'est justement de ça que je vous parle.",
+  },
+];
+
+export const OBJECTIONS: Record<Angle, Objection[]> = {
+  "site-mort": socleObjections,
+  reseaux: socleObjections,
+  "sans-site": sansSiteObjections,
+};
+```
+
+`socleObjections` est déclaré comme `const socleObjections: Objection[] = [...]` (contenu = l'actuel `OBJECTIONS`, avec la réponse originale à « Envoyez-moi un courriel. » restaurée), non exporté — même schéma que `socleScript` pour `CALL_STEPS`. Ni `socleObjections` ni `sansSiteObjections` ne sont exportés individuellement ; seul `OBJECTIONS` l'est.
+
+`components/script-panel.tsx` : remplacer `OBJECTIONS.map((o) => (...))` par `OBJECTIONS[angle].map((o) => (...))` (le composant calcule déjà `angle`, ajouté dans la tâche précédente).
+
+Test : ajouter dans `lib/call-script.test.ts`, dans le `describe("CALL_STEPS", ...)` (ou un `describe("OBJECTIONS", ...)` séparé), une assertion que `OBJECTIONS["site-mort"]` et `OBJECTIONS["reseaux"]` pointent vers le même tableau (`toBe`, pas `toEqual`) et que `OBJECTIONS["sans-site"]` a bien 13 entrées.
