@@ -161,7 +161,7 @@ export default function Page() {
 
       {callMode && (
         <CallMode
-          prospect={prochain}
+          queue={aAppeler}
           restants={aAppeler.length}
           onStatus={setStatus}
           onClose={() => setCallMode(false)}

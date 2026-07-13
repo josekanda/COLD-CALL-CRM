@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import {
   Phone,
   PhoneOff,
@@ -23,20 +24,29 @@ import { telHref, noteLabel } from "@/lib/prospect";
 import { safeHttpUrl } from "@/lib/url";
 
 export function CallMode({
-  prospect,
+  queue,
   restants,
   onStatus,
   onClose,
   onToast,
   onRemove,
 }: {
-  prospect: Prospect | null;
+  queue: Prospect[];
   restants: number;
   onStatus: (id: string, s: Status) => void;
   onClose: () => void;
   onToast: (msg: string) => void;
   onRemove: (id: string) => void;
 }) {
+  const [skipped, setSkipped] = useState<string[]>([]);
+
+  const skippedSet = new Set(skipped);
+  const front = queue.filter((p) => !skippedSet.has(p.id));
+  const back = skipped
+    .map((id) => queue.find((p) => p.id === id))
+    .filter((p): p is Prospect => !!p);
+  const prospect = [...front, ...back][0] ?? null;
+
   if (!prospect) {
     return (
       <div className="fixed inset-0 z-50 grid place-items-center bg-background/95 p-6">
@@ -70,6 +80,15 @@ export function CallMode({
   const act = (s: Status, msg: string) => {
     onStatus(prospect.id, s);
     onToast(msg);
+  };
+  const passJoint = () => {
+    onStatus(prospect.id, "a_appeler");
+    setSkipped((prev) => [...prev, prospect.id]);
+    onToast("Pas joint — reste à appeler");
+  };
+  const non = () => {
+    onRemove(prospect.id);
+    onToast("Rayé");
   };
 
   return (
@@ -112,7 +131,7 @@ export function CallMode({
             )}
             <div className="mt-6 grid grid-cols-2 gap-2">
               <button
-                onClick={() => act("a_appeler", "Pas joint — reste à appeler")}
+                onClick={passJoint}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 font-semibold text-sm"
               >
                 <PhoneOff className="size-4" aria-hidden />
@@ -125,7 +144,7 @@ export function CallMode({
                 <CalendarClock className="size-4" aria-hidden />À rappeler
               </button>
               <button
-                onClick={() => act("refus", "Rayé")}
+                onClick={non}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 font-semibold text-sm"
               >
                 <X className="size-4" aria-hidden />
