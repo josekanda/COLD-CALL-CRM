@@ -73,7 +73,7 @@ export function ScriptPanel({ current }: { current?: Prospect | null }) {
             </div>
           ) : (
             <div className="space-y-3">
-              {OBJECTIONS.map((o) => (
+              {OBJECTIONS[angle].map((o) => (
                 <div key={o.question}>
                   <div className="font-semibold text-sm">« {o.question} »</div>
                   <div className="text-sm text-muted-foreground">

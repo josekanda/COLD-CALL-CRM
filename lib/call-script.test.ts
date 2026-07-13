@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { fillScript, CALL_STEPS } from "./call-script";
+import { fillScript, CALL_STEPS, OBJECTIONS } from "./call-script";
 
 describe("fillScript", () => {
   it("substitue entreprise / métier / ville, garde [prénom]", () => {
@@ -51,5 +51,14 @@ describe("CALL_STEPS", () => {
       .map((s) => s.texte)
       .join(" ");
     expect(texteComplet).not.toMatch(/\[prénom\]/);
+  });
+});
+
+describe("OBJECTIONS", () => {
+  it("site-mort et reseaux partagent la même référence de tableau", () => {
+    expect(OBJECTIONS["site-mort"]).toBe(OBJECTIONS.reseaux);
+  });
+  it("sans-site a 13 entrées", () => {
+    expect(OBJECTIONS["sans-site"]).toHaveLength(13);
   });
 });

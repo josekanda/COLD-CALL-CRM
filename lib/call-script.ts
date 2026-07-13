@@ -123,7 +123,7 @@ export interface Objection {
   reponse: string;
 }
 
-export const OBJECTIONS: Objection[] = [
+const socleObjections: Objection[] = [
   {
     question: "C'est quoi l'arnaque, c'est gratuit ?",
     reponse:
@@ -142,7 +142,7 @@ export const OBJECTIONS: Objection[] = [
   {
     question: "Envoyez-moi un courriel.",
     reponse:
-      "Parfait, c'est justement une des deux options qu'on offre. Quel est le meilleur courriel pour vous joindre ?",
+      "Je peux faire mieux. Ce soir vous recevez le site fini, directement sur ce numéro. Vous jugez sur pièce, ça vaut tous les dépliants du monde.",
   },
   {
     question: "J'ai pas le temps.",
@@ -190,3 +190,77 @@ export const OBJECTIONS: Objection[] = [
       "Sur votre fiche Google, là où vos clients vous trouvent. C'est justement de ça que je vous parle.",
   },
 ];
+
+const sansSiteObjections: Objection[] = [
+  {
+    question: "C'est quoi l'arnaque, c'est gratuit ?",
+    reponse:
+      "Il n'y en a pas. Vous regardez d'abord l'exemple, et si ça vous plaît, on parle du prix à ce moment-là. Si ça ne vous plaît pas, on en reste là. Je préfère montrer que promettre.",
+  },
+  {
+    question: "Je marche au bouche à oreille, j'ai pas besoin.",
+    reponse:
+      "C'est exactement pour ça que je vous ai choisi, vos avis sont excellents. Et la moitié des gens à qui on vous recommande tapent votre nom sur Google avant d'appeler. Là, ils ne trouvent rien. Un site simple récupère ces gens-là.",
+  },
+  {
+    question: "Je suis déjà sur Google.",
+    reponse:
+      "Votre fiche, oui, et elle est très bien. Mais quand on clique pour en savoir plus, il n'y a rien derrière. C'est la différence entre être trouvé et être choisi.",
+  },
+  {
+    question: "Envoyez-moi un courriel.",
+    reponse:
+      "Parfait, c'est justement une des deux options qu'on offre. Quel est le meilleur courriel pour vous joindre ?",
+  },
+  {
+    question: "J'ai pas le temps.",
+    reponse:
+      "Justement, ça ne prend aucun de votre temps. Je vous prépare un exemple, puis vous le regardez deux minutes quand ça adonne. C'est tout.",
+  },
+  {
+    question: "Combien ça coûte ?",
+    reponse:
+      "On en parle quand vous l'aurez vu. Tant que ça ne vous plaît pas, ça ne coûte rien. Et c'est sans rapport avec les devis d'agence que vous avez peut-être déjà reçus.",
+  },
+  {
+    question: "J'ai déjà un site.",
+    reponse:
+      "D'accord, je ne suis pas tombé dessus en cherchant votre entreprise. On peut quand même vous préparer un exemple pour comparer, ça n'engage à rien.",
+  },
+  {
+    question: "C'est fait avec l'IA votre truc ?",
+    reponse:
+      "C'est fait par moi, avec les outils professionnels d'aujourd'hui. Ce qui compte, c'est le résultat, et vous jugerez quand vous aurez vu l'exemple.",
+  },
+  {
+    question: "C'est vous l'IA, un robot ?",
+    reponse:
+      "Non non, je suis bien réel. Vous m'entendez hésiter, là ? (souris en le disant)",
+  },
+  {
+    question: "Qui me rappelle, c'est vous ?",
+    reponse:
+      "On vous prépare l'exemple, puis on se reparle une fois que vous l'aurez vu.",
+  },
+  {
+    question: "Je suis pas le patron.",
+    reponse:
+      "Vous faites bien de me le dire. On vous envoie l'exemple quand même, vous le montrez au patron, et on se reparle après.",
+  },
+  {
+    question: "Rappelez-moi plus tard.",
+    reponse:
+      "Bien sûr, je vous prends pas plus de temps. On vous prépare l'exemple, puis on se reparle une fois que vous l'aurez vu.",
+  },
+  {
+    question: "Comment vous avez eu mon numéro ?",
+    reponse:
+      "Sur votre fiche Google, là où vos clients vous trouvent. C'est justement de ça que je vous parle.",
+  },
+];
+
+export const OBJECTIONS: Record<Angle, Objection[]> = {
+  "site-mort": socleObjections,
+  reseaux: socleObjections,
+  "sans-site": sansSiteObjections,
+};
