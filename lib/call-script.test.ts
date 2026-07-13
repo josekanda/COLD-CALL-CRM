@@ -26,15 +26,30 @@ describe("fillScript", () => {
 });
 
 describe("CALL_STEPS", () => {
-  it("socle de 3 temps (hook → retournement → proposition) + verrouillage + sortie", () => {
-    expect(CALL_STEPS).toHaveLength(5);
-    expect(CALL_STEPS[0].titre).toMatch(/hook/i);
-    expect(CALL_STEPS[1].titre).toMatch(/retournement/i);
-    expect(CALL_STEPS[2].titre).toMatch(/proposition/i);
-    expect(CALL_STEPS[4].titre).toMatch(/sortie/i);
+  it("site-mort et reseaux gardent le socle hook → retournement → proposition + verrouillage + sortie", () => {
+    for (const angle of ["site-mort", "reseaux"] as const) {
+      const steps = CALL_STEPS[angle];
+      expect(steps).toHaveLength(5);
+      expect(steps[0].titre).toMatch(/hook/i);
+      expect(steps[1].titre).toMatch(/retournement/i);
+      expect(steps[2].titre).toMatch(/proposition/i);
+      expect(steps[4].titre).toMatch(/sortie/i);
+    }
   });
-  it("ne laisse plus de placeholder non géré ([prénom]) dans le script", () => {
-    const texteComplet = CALL_STEPS.map((s) => s.texte).join(" ");
+  it("sans-site a le nouveau flow hook → raison de l'appel → proposition → verrouillage + canal → sortie", () => {
+    const steps = CALL_STEPS["sans-site"];
+    expect(steps).toHaveLength(5);
+    expect(steps[0].titre).toMatch(/hook/i);
+    expect(steps[1].titre).toMatch(/raison de l'appel/i);
+    expect(steps[2].titre).toMatch(/proposition/i);
+    expect(steps[3].titre).toMatch(/verrouillage/i);
+    expect(steps[4].titre).toMatch(/sortie/i);
+  });
+  it("ne laisse plus de placeholder non géré ([prénom]) dans aucune séquence", () => {
+    const texteComplet = Object.values(CALL_STEPS)
+      .flat()
+      .map((s) => s.texte)
+      .join(" ");
     expect(texteComplet).not.toMatch(/\[prénom\]/);
   });
 });

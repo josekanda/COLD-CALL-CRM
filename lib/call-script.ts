@@ -16,43 +16,6 @@ export interface ScriptStep {
   texte: string;
 }
 
-export const CALL_STEPS: ScriptStep[] = [
-  {
-    titre: "1 · Le hook",
-    texte:
-      "Bonjour, je suis bien chez [entreprise] ? Si je vous dis que c'est un appel de prospection, vous jetez votre téléphone par la fenêtre, ou vous me laissez trente secondes ?",
-  },
-  {
-    titre: "2 · Le retournement",
-    texte:
-      "J'imagine qu'on vous appelle souvent pour vous vendre un site. Moi c'est différent. Je me suis permis de vous en créer un, il existe déjà.",
-  },
-  {
-    titre: "3 · La proposition zéro risque",
-    texte:
-      "Ça n'engage à rien, je vous l'envoie en fin d'après-midi, vous regardez deux minutes ce soir, et si ça ne vous plaît pas on en reste là.",
-  },
-  {
-    titre: "4 · Le verrouillage",
-    texte:
-      "Je vous l'envoie sur ce numéro ? Parfait. Et je vous rappelle demain pour avoir votre retour à chaud, plutôt le matin ou l'après-midi ?",
-  },
-  {
-    titre: "5 · La sortie",
-    texte:
-      "Super, vous recevez le lien avant 18h. Très bonne journée, et à demain.",
-  },
-];
-
-// Variante à glisser quand la fiche a un lien site MORT (Pourquoi : lien casse / domaine en vente / gratuit amateur).
-export const SITE_MORT_TIP =
-  "Variante site mort — « Petite chose : en préparant mon appel, j'ai cliqué sur le lien site de votre fiche Google… et ça affiche une erreur. Pour un client, c'est pire que pas de site : on dirait que c'est fermé. » (La preuve est vérifiable par le patron en direct.)";
-
-// Ce qui compte comme un bon OUI (tracker, feuille Script). À garder en tête au
-// moment de cliquer OUI : sans créneau de rappel, ce n'est pas un vrai OUI.
-export const BON_OUI =
-  "Un bon OUI = il accepte de recevoir le site ET il te donne un créneau pour le rappel de demain. Un « ouais, envoyez un mail » pour se débarrasser ne compte pas : pousse gentiment pour le créneau, sinon mets « À rappeler ».";
-
 // Angle d'appel (tracker, colonne « Angle d'appel ») : dérivé de la colonne
 // Pourquoi du scoring, il dit quel pitch utiliser sur cette fiche.
 export type Angle = "site-mort" | "reseaux" | "sans-site";
@@ -80,6 +43,105 @@ export function angleAppel(pourquoi: string): Angle {
   return "sans-site";
 }
 
+export const CALL_STEPS: Record<Angle, ScriptStep[]> = {
+  "site-mort": [
+    {
+      titre: "1 · Le hook",
+      texte:
+        "Bonjour, je suis bien chez [entreprise] ? Si je vous dis que c'est un appel de prospection, vous jetez votre téléphone par la fenêtre, ou vous me laissez trente secondes ?",
+    },
+    {
+      titre: "2 · Le retournement",
+      texte:
+        "J'imagine qu'on vous appelle souvent pour vous vendre un site. Moi c'est différent. Je me suis permis de vous en créer un, il existe déjà.",
+    },
+    {
+      titre: "3 · La proposition zéro risque",
+      texte:
+        "Ça n'engage à rien, je vous l'envoie en fin d'après-midi, vous regardez deux minutes ce soir, et si ça ne vous plaît pas on en reste là.",
+    },
+    {
+      titre: "4 · Le verrouillage",
+      texte:
+        "Je vous l'envoie sur ce numéro ? Parfait. Et je vous rappelle demain pour avoir votre retour à chaud, plutôt le matin ou l'après-midi ?",
+    },
+    {
+      titre: "5 · La sortie",
+      texte:
+        "Super, vous recevez le lien avant 18h. Très bonne journée, et à demain.",
+    },
+  ],
+  reseaux: [
+    {
+      titre: "1 · Le hook",
+      texte:
+        "Bonjour, je suis bien chez [entreprise] ? Si je vous dis que c'est un appel de prospection, vous jetez votre téléphone par la fenêtre, ou vous me laissez trente secondes ?",
+    },
+    {
+      titre: "2 · Le retournement",
+      texte:
+        "J'imagine qu'on vous appelle souvent pour vous vendre un site. Moi c'est différent. Je me suis permis de vous en créer un, il existe déjà.",
+    },
+    {
+      titre: "3 · La proposition zéro risque",
+      texte:
+        "Ça n'engage à rien, je vous l'envoie en fin d'après-midi, vous regardez deux minutes ce soir, et si ça ne vous plaît pas on en reste là.",
+    },
+    {
+      titre: "4 · Le verrouillage",
+      texte:
+        "Je vous l'envoie sur ce numéro ? Parfait. Et je vous rappelle demain pour avoir votre retour à chaud, plutôt le matin ou l'après-midi ?",
+    },
+    {
+      titre: "5 · La sortie",
+      texte:
+        "Super, vous recevez le lien avant 18h. Très bonne journée, et à demain.",
+    },
+  ],
+  "sans-site": [
+    {
+      titre: "1 · Le hook",
+      texte:
+        "Salut, c'est (ton prénom) de Ghaflow. Je vous appelle pour [entreprise]. On va être ben rapides, est-ce que vous avez 20 secondes ?",
+    },
+    {
+      titre: "2 · La raison de l'appel",
+      texte:
+        "On vous appelle parce qu'on a remarqué que vous n'avez pas de site web en ce moment. Souvent, ça fait en sorte que des clients vous cherchent, mais ne trouvent pas d'info claire ou ne prennent juste pas le temps d'aller plus loin.",
+    },
+    {
+      titre: "3 · La proposition",
+      texte:
+        "Chez Ghaflow, on aide justement des entreprises comme la vôtre à se faire un site simple, propre, pas compliqué, juste pour bien vous présenter et permettre aux gens de vous contacter facilement.",
+    },
+    {
+      titre: "4 · Le verrouillage + choix du canal",
+      texte:
+        "Est-ce que c'est un sujet que vous seriez ouverts à regarder ? Si oui, on peut vous préparer un petit exemple concret de ce que ça pourrait donner pour votre entreprise, puis vous l'envoyer. Vous préférez qu'on vous l'envoie par courriel ou par texto ? (Courriel) Parfait, quel est le meilleur courriel pour vous joindre ? (Texte) Parfait, on vous envoie ça sur ce numéro-là, ça vous convient ?",
+    },
+    {
+      titre: "5 · La sortie",
+      texte:
+        "Excellent, on vous envoie ça, puis on se reparle après que vous l'ayez vu. Si vous voyez que ce n'est pas pour vous, il n'y a pas de problème, vous décidez.",
+    },
+  ],
+};
+
+// Variante à glisser quand la fiche a un lien site MORT (Pourquoi : lien casse / domaine en vente / gratuit amateur).
+export const SITE_MORT_TIP =
+  "Variante site mort — « Petite chose : en préparant mon appel, j'ai cliqué sur le lien site de votre fiche Google… et ça affiche une erreur. Pour un client, c'est pire que pas de site : on dirait que c'est fermé. » (La preuve est vérifiable par le patron en direct.)";
+
+// Ce qui compte comme un bon OUI (tracker, feuille Script), par angle — à
+// garder en tête au moment de cliquer OUI.
+export const BON_OUI: Record<Angle, string> = {
+  "site-mort":
+    "Un bon OUI = il accepte de recevoir le site ET il te donne un créneau pour le rappel de demain. Un « ouais, envoyez un mail » pour se débarrasser ne compte pas : pousse gentiment pour le créneau, sinon mets « À rappeler ».",
+  reseaux:
+    "Un bon OUI = il accepte de recevoir le site ET il te donne un créneau pour le rappel de demain. Un « ouais, envoyez un mail » pour se débarrasser ne compte pas : pousse gentiment pour le créneau, sinon mets « À rappeler ».",
+  "sans-site":
+    "Un bon OUI = il accepte de recevoir l'exemple ET il donne un courriel valide ou confirme que le texto sur ce numéro lui convient. Un « ouais, envoyez ça » vague sans courriel précis ni confirmation ne compte pas : pousse gentiment pour l'info exacte, sinon mets « À rappeler ».",
+};
+
 export interface Objection {
   question: string;
   reponse: string;
@@ -104,7 +166,7 @@ export const OBJECTIONS: Objection[] = [
   {
     question: "Envoyez-moi un courriel.",
     reponse:
-      "Je peux faire mieux. Ce soir vous recevez le site fini, directement sur ce numéro. Vous jugez sur pièce, ça vaut tous les dépliants du monde.",
+      "Parfait, c'est justement une des deux options qu'on offre. Quel est le meilleur courriel pour vous joindre ?",
   },
   {
     question: "J'ai pas le temps.",

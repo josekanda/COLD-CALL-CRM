@@ -163,7 +163,7 @@ export function CallMode({
                 className="size-3.5 shrink-0 mt-0.5 text-primary"
                 aria-hidden
               />
-              {BON_OUI}
+              {BON_OUI[angle]}
             </p>
             <button
               onClick={() => {
@@ -196,7 +196,7 @@ export function CallMode({
                 <span>{SITE_MORT_TIP}</span>
               </div>
             )}
-            {CALL_STEPS.map((s) => (
+            {CALL_STEPS[angle].map((s) => (
               <div key={s.titre}>
                 <div className="font-semibold text-sm text-primary">
                   {s.titre}

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Phone, ChevronDown } from "lucide-react";
 import type { Prospect } from "@/lib/types";
-import { CALL_STEPS, OBJECTIONS, fillScript } from "@/lib/call-script";
+import { CALL_STEPS, OBJECTIONS, fillScript, angleAppel } from "@/lib/call-script";
 
 export function ScriptPanel({ current }: { current?: Prospect | null }) {
   const [open, setOpen] = useState(false);
@@ -12,6 +12,7 @@ export function ScriptPanel({ current }: { current?: Prospect | null }) {
     ville: current?.ville ?? "",
     activite: current?.activite ?? "",
   };
+  const angle = angleAppel(current?.pourquoi ?? "");
 
   return (
     <div className="fixed bottom-4 right-4 z-40 w-[min(420px,92vw)]">
@@ -59,7 +60,7 @@ export function ScriptPanel({ current }: { current?: Prospect | null }) {
           </div>
           {tab === "script" ? (
             <div className="space-y-3">
-              {CALL_STEPS.map((s) => (
+              {CALL_STEPS[angle].map((s) => (
                 <div key={s.titre}>
                   <div className="font-semibold text-sm text-primary">
                     {s.titre}
