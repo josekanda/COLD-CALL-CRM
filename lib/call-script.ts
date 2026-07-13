@@ -43,61 +43,37 @@ export function angleAppel(pourquoi: string): Angle {
   return "sans-site";
 }
 
+const socleScript: ScriptStep[] = [
+  {
+    titre: "1 · Le hook",
+    texte:
+      "Bonjour, je suis bien chez [entreprise] ? Si je vous dis que c'est un appel de prospection, vous jetez votre téléphone par la fenêtre, ou vous me laissez trente secondes ?",
+  },
+  {
+    titre: "2 · Le retournement",
+    texte:
+      "J'imagine qu'on vous appelle souvent pour vous vendre un site. Moi c'est différent. Je me suis permis de vous en créer un, il existe déjà.",
+  },
+  {
+    titre: "3 · La proposition zéro risque",
+    texte:
+      "Ça n'engage à rien, je vous l'envoie en fin d'après-midi, vous regardez deux minutes ce soir, et si ça ne vous plaît pas on en reste là.",
+  },
+  {
+    titre: "4 · Le verrouillage",
+    texte:
+      "Je vous l'envoie sur ce numéro ? Parfait. Et je vous rappelle demain pour avoir votre retour à chaud, plutôt le matin ou l'après-midi ?",
+  },
+  {
+    titre: "5 · La sortie",
+    texte:
+      "Super, vous recevez le lien avant 18h. Très bonne journée, et à demain.",
+  },
+];
+
 export const CALL_STEPS: Record<Angle, ScriptStep[]> = {
-  "site-mort": [
-    {
-      titre: "1 · Le hook",
-      texte:
-        "Bonjour, je suis bien chez [entreprise] ? Si je vous dis que c'est un appel de prospection, vous jetez votre téléphone par la fenêtre, ou vous me laissez trente secondes ?",
-    },
-    {
-      titre: "2 · Le retournement",
-      texte:
-        "J'imagine qu'on vous appelle souvent pour vous vendre un site. Moi c'est différent. Je me suis permis de vous en créer un, il existe déjà.",
-    },
-    {
-      titre: "3 · La proposition zéro risque",
-      texte:
-        "Ça n'engage à rien, je vous l'envoie en fin d'après-midi, vous regardez deux minutes ce soir, et si ça ne vous plaît pas on en reste là.",
-    },
-    {
-      titre: "4 · Le verrouillage",
-      texte:
-        "Je vous l'envoie sur ce numéro ? Parfait. Et je vous rappelle demain pour avoir votre retour à chaud, plutôt le matin ou l'après-midi ?",
-    },
-    {
-      titre: "5 · La sortie",
-      texte:
-        "Super, vous recevez le lien avant 18h. Très bonne journée, et à demain.",
-    },
-  ],
-  reseaux: [
-    {
-      titre: "1 · Le hook",
-      texte:
-        "Bonjour, je suis bien chez [entreprise] ? Si je vous dis que c'est un appel de prospection, vous jetez votre téléphone par la fenêtre, ou vous me laissez trente secondes ?",
-    },
-    {
-      titre: "2 · Le retournement",
-      texte:
-        "J'imagine qu'on vous appelle souvent pour vous vendre un site. Moi c'est différent. Je me suis permis de vous en créer un, il existe déjà.",
-    },
-    {
-      titre: "3 · La proposition zéro risque",
-      texte:
-        "Ça n'engage à rien, je vous l'envoie en fin d'après-midi, vous regardez deux minutes ce soir, et si ça ne vous plaît pas on en reste là.",
-    },
-    {
-      titre: "4 · Le verrouillage",
-      texte:
-        "Je vous l'envoie sur ce numéro ? Parfait. Et je vous rappelle demain pour avoir votre retour à chaud, plutôt le matin ou l'après-midi ?",
-    },
-    {
-      titre: "5 · La sortie",
-      texte:
-        "Super, vous recevez le lien avant 18h. Très bonne journée, et à demain.",
-    },
-  ],
+  "site-mort": socleScript,
+  reseaux: socleScript,
   "sans-site": [
     {
       titre: "1 · Le hook",
